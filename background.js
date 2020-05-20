@@ -1,0 +1,1 @@
+"use strict";chrome.runtime.onInstalled.addListener((function(){chrome.storage.local.clear(),chrome.storage.local.set({settings:{}},(function(){}))}));

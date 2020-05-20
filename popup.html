@@ -1,0 +1,62 @@
+<html>
+
+<head>
+
+	<title>VoiceMpower "Click to Call" - Settings</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<link rel="stylesheet" type="text/css" href="assets/css/popup.css">
+	<script src="popup.js"></script>
+
+</head>
+
+<body>
+
+
+	<div id="popup">
+
+		<img src="assets/img/i-300-27.png" alt="VoiceMpower">
+		<h1>"Click to Call" Settings</h1>
+
+		<div id="messages"></div>
+
+		<form id="settings">
+
+			<div class="form-field">
+				<input type="hidden" name="ssl" value="false">
+				<label><input type="checkbox" name="ssl" value="true" checked="checked"> Use SSL</label>
+			</div>
+
+			<div class="form-field">
+				<label>Server</label>
+				<input type="text" name="server" value="" placeholder="192.168.0.10" required>
+			</div>
+
+			<div class="form-field">
+				<label>Port</label>
+				<input type="text" name="port" value="" placeholder="4445" required>
+			</div>
+
+			<div class="form-field">
+				<label>Extension</label>
+				<input type="text" name="extension" value="" required>
+			</div>
+
+			<div class="form-field">
+				<label>Password</label>
+				<input type="password" name="password" value="" required>
+			</div>
+
+			<div class="form-field">
+				<input type="submit" value="Save">
+			</div>
+
+		</form>
+
+
+
+
+	</div>
+
+</body>

@@ -26,6 +26,10 @@
       "tabs",
       "storage"
    ],
-   "version": "1.0.3",
-   "web_accessible_resources": [ "assets/img/tel-19.png" ]
+   "version": "1.0.4",
+   "web_accessible_resources": [
+      "assets/img/tel-128.png",
+      "assets/img/tel-128-red.png",
+      "assets/img/tel-128-green.png"
+   ]
 }

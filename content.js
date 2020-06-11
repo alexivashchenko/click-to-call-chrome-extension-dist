@@ -1,1 +1,932 @@
-var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(n){var e,t,r,o,i,c,a,d="",s=0;for(n=Base64._utf8_encode(n);s<n.length;)o=(e=n.charCodeAt(s++))>>2,i=(3&e)<<4|(t=n.charCodeAt(s++))>>4,c=(15&t)<<2|(r=n.charCodeAt(s++))>>6,a=63&r,isNaN(t)?c=a=64:isNaN(r)&&(a=64),d=d+this._keyStr.charAt(o)+this._keyStr.charAt(i)+this._keyStr.charAt(c)+this._keyStr.charAt(a);return d},decode:function(n){var e,t,r,o,i,c,a="",d=0;for(n=n.replace(/[^A-Za-z0-9\+\/\=]/g,"");d<n.length;)e=this._keyStr.indexOf(n.charAt(d++))<<2|(o=this._keyStr.indexOf(n.charAt(d++)))>>4,t=(15&o)<<4|(i=this._keyStr.indexOf(n.charAt(d++)))>>2,r=(3&i)<<6|(c=this._keyStr.indexOf(n.charAt(d++))),a+=String.fromCharCode(e),64!=i&&(a+=String.fromCharCode(t)),64!=c&&(a+=String.fromCharCode(r));return a=Base64._utf8_decode(a)},_utf8_encode:function(n){n=n.replace(/\r\n/g,"\n");for(var e="",t=0;t<n.length;t++){var r=n.charCodeAt(t);r<128?e+=String.fromCharCode(r):r>127&&r<2048?(e+=String.fromCharCode(r>>6|192),e+=String.fromCharCode(63&r|128)):(e+=String.fromCharCode(r>>12|224),e+=String.fromCharCode(r>>6&63|128),e+=String.fromCharCode(63&r|128))}return e},_utf8_decode:function(n){for(var e="",t=0,r=c1=c2=0;t<n.length;)(r=n.charCodeAt(t))<128?(e+=String.fromCharCode(r),t++):r>191&&r<224?(c2=n.charCodeAt(t+1),e+=String.fromCharCode((31&r)<<6|63&c2),t+=2):(c2=n.charCodeAt(t+1),c3=n.charCodeAt(t+2),e+=String.fromCharCode((15&r)<<12|(63&c2)<<6|63&c3),t+=3);return e}},hexcase=0,b64pad="",chrsz=8;function hex_md5(n){return binl2hex(core_md5(str2binl(n),n.length*chrsz))}function b64_md5(n){return binl2b64(core_md5(str2binl(n),n.length*chrsz))}function str_md5(n){return binl2str(core_md5(str2binl(n),n.length*chrsz))}function hex_hmac_md5(n,e){return binl2hex(core_hmac_md5(n,e))}function b64_hmac_md5(n,e){return binl2b64(core_hmac_md5(n,e))}function str_hmac_md5(n,e){return binl2str(core_hmac_md5(n,e))}function md5_vm_test(){return"900150983cd24fb0d6963f7d28e17f72"==hex_md5("abc")}function core_md5(n,e){n[e>>5]|=128<<e%32,n[14+(e+64>>>9<<4)]=e;for(var t=1732584193,r=-271733879,o=-1732584194,i=271733878,c=0;c<n.length;c+=16){var a=t,d=r,s=o,f=i;t=md5_ff(t,r,o,i,n[c+0],7,-680876936),i=md5_ff(i,t,r,o,n[c+1],12,-389564586),o=md5_ff(o,i,t,r,n[c+2],17,606105819),r=md5_ff(r,o,i,t,n[c+3],22,-1044525330),t=md5_ff(t,r,o,i,n[c+4],7,-176418897),i=md5_ff(i,t,r,o,n[c+5],12,1200080426),o=md5_ff(o,i,t,r,n[c+6],17,-1473231341),r=md5_ff(r,o,i,t,n[c+7],22,-45705983),t=md5_ff(t,r,o,i,n[c+8],7,1770035416),i=md5_ff(i,t,r,o,n[c+9],12,-1958414417),o=md5_ff(o,i,t,r,n[c+10],17,-42063),r=md5_ff(r,o,i,t,n[c+11],22,-1990404162),t=md5_ff(t,r,o,i,n[c+12],7,1804603682),i=md5_ff(i,t,r,o,n[c+13],12,-40341101),o=md5_ff(o,i,t,r,n[c+14],17,-1502002290),t=md5_gg(t,r=md5_ff(r,o,i,t,n[c+15],22,1236535329),o,i,n[c+1],5,-165796510),i=md5_gg(i,t,r,o,n[c+6],9,-1069501632),o=md5_gg(o,i,t,r,n[c+11],14,643717713),r=md5_gg(r,o,i,t,n[c+0],20,-373897302),t=md5_gg(t,r,o,i,n[c+5],5,-701558691),i=md5_gg(i,t,r,o,n[c+10],9,38016083),o=md5_gg(o,i,t,r,n[c+15],14,-660478335),r=md5_gg(r,o,i,t,n[c+4],20,-405537848),t=md5_gg(t,r,o,i,n[c+9],5,568446438),i=md5_gg(i,t,r,o,n[c+14],9,-1019803690),o=md5_gg(o,i,t,r,n[c+3],14,-187363961),r=md5_gg(r,o,i,t,n[c+8],20,1163531501),t=md5_gg(t,r,o,i,n[c+13],5,-1444681467),i=md5_gg(i,t,r,o,n[c+2],9,-51403784),o=md5_gg(o,i,t,r,n[c+7],14,1735328473),t=md5_hh(t,r=md5_gg(r,o,i,t,n[c+12],20,-1926607734),o,i,n[c+5],4,-378558),i=md5_hh(i,t,r,o,n[c+8],11,-2022574463),o=md5_hh(o,i,t,r,n[c+11],16,1839030562),r=md5_hh(r,o,i,t,n[c+14],23,-35309556),t=md5_hh(t,r,o,i,n[c+1],4,-1530992060),i=md5_hh(i,t,r,o,n[c+4],11,1272893353),o=md5_hh(o,i,t,r,n[c+7],16,-155497632),r=md5_hh(r,o,i,t,n[c+10],23,-1094730640),t=md5_hh(t,r,o,i,n[c+13],4,681279174),i=md5_hh(i,t,r,o,n[c+0],11,-358537222),o=md5_hh(o,i,t,r,n[c+3],16,-722521979),r=md5_hh(r,o,i,t,n[c+6],23,76029189),t=md5_hh(t,r,o,i,n[c+9],4,-640364487),i=md5_hh(i,t,r,o,n[c+12],11,-421815835),o=md5_hh(o,i,t,r,n[c+15],16,530742520),t=md5_ii(t,r=md5_hh(r,o,i,t,n[c+2],23,-995338651),o,i,n[c+0],6,-198630844),i=md5_ii(i,t,r,o,n[c+7],10,1126891415),o=md5_ii(o,i,t,r,n[c+14],15,-1416354905),r=md5_ii(r,o,i,t,n[c+5],21,-57434055),t=md5_ii(t,r,o,i,n[c+12],6,1700485571),i=md5_ii(i,t,r,o,n[c+3],10,-1894986606),o=md5_ii(o,i,t,r,n[c+10],15,-1051523),r=md5_ii(r,o,i,t,n[c+1],21,-2054922799),t=md5_ii(t,r,o,i,n[c+8],6,1873313359),i=md5_ii(i,t,r,o,n[c+15],10,-30611744),o=md5_ii(o,i,t,r,n[c+6],15,-1560198380),r=md5_ii(r,o,i,t,n[c+13],21,1309151649),t=md5_ii(t,r,o,i,n[c+4],6,-145523070),i=md5_ii(i,t,r,o,n[c+11],10,-1120210379),o=md5_ii(o,i,t,r,n[c+2],15,718787259),r=md5_ii(r,o,i,t,n[c+9],21,-343485551),t=safe_add(t,a),r=safe_add(r,d),o=safe_add(o,s),i=safe_add(i,f)}return Array(t,r,o,i)}function md5_cmn(n,e,t,r,o,i){return safe_add(bit_rol(safe_add(safe_add(e,n),safe_add(r,i)),o),t)}function md5_ff(n,e,t,r,o,i,c){return md5_cmn(e&t|~e&r,n,e,o,i,c)}function md5_gg(n,e,t,r,o,i,c){return md5_cmn(e&r|t&~r,n,e,o,i,c)}function md5_hh(n,e,t,r,o,i,c){return md5_cmn(e^t^r,n,e,o,i,c)}function md5_ii(n,e,t,r,o,i,c){return md5_cmn(t^(e|~r),n,e,o,i,c)}function core_hmac_md5(n,e){var t=str2binl(n);t.length>16&&(t=core_md5(t,n.length*chrsz));for(var r=Array(16),o=Array(16),i=0;i<16;i++)r[i]=909522486^t[i],o[i]=1549556828^t[i];var c=core_md5(r.concat(str2binl(e)),512+e.length*chrsz);return core_md5(o.concat(c),640)}function safe_add(n,e){var t=(65535&n)+(65535&e);return(n>>16)+(e>>16)+(t>>16)<<16|65535&t}function bit_rol(n,e){return n<<e|n>>>32-e}function str2binl(n){for(var e=Array(),t=(1<<chrsz)-1,r=0;r<n.length*chrsz;r+=chrsz)e[r>>5]|=(n.charCodeAt(r/chrsz)&t)<<r%32;return e}function binl2str(n){for(var e="",t=(1<<chrsz)-1,r=0;r<32*n.length;r+=chrsz)e+=String.fromCharCode(n[r>>5]>>>r%32&t);return e}function binl2hex(n){for(var e=hexcase?"0123456789ABCDEF":"0123456789abcdef",t="",r=0;r<4*n.length;r++)t+=e.charAt(n[r>>2]>>r%4*8+4&15)+e.charAt(n[r>>2]>>r%4*8&15);return t}function binl2b64(n){for(var e="",t=0;t<4*n.length;t+=3)for(var r=(n[t>>2]>>t%4*8&255)<<16|(n[t+1>>2]>>(t+1)%4*8&255)<<8|n[t+2>>2]>>(t+2)%4*8&255,o=0;o<4;o++)8*t+6*o>32*n.length?e+=b64pad:e+="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(r>>6*(3-o)&63);return e}function inIframe(){try{return window.self!==window.top}catch(n){return!0}}if(inIframe())console.log("Extension loaded inside iframe. Abort.");else{let n={dev:!0,phoneLinksInfo:!1,showedNotification:!1,notification:{},requiredSettings:["ssl","server","port","extension","password"],settings:{},log:function(...arguments){if(0==n.dev)return!1;arguments.length>0&&arguments.forEach(n=>{console.log(n)})}},e=!0,t=!0,r=!1,o="",i=1,c=null,a=null,d="",s=null,f=null,h=0,u=0,m=[];function inArray(n,e){return-1!==e.indexOf(n)}function __debug(...arguments){if(0==e)return!1;arguments.length>0&&arguments.forEach(n=>{"string"!=typeof n||n.includes("style=")||n.includes("ping=")||n.includes("pong=")||n.includes("plugin=")||void 0!==window.console&&console.log(n)})}function send(n){if(void 0===r||0==r)return __debug("Error. WebSocked is undefined.",r),!1;n.includes("|ping|")||__debug("sending command "+n),r.send(n)}function sendsPing(){__debug("ping "+h),5<h&&__debug("Connection problem with websocket server!"),send('<msg data="1|ping||" />'),h++}function connectContext(){send(""!==o?'<msg data="'+o.toUpperCase()+'|contexto|1|" />':'<msg data="GENERAL|contexto|1|" />'),setTimeout((function(){sendsPing()}),1e4)}function doCommand(n,e,t,r){"status"==e&&(e="xstatus"),"zbuttons"!=e&&__debug(n+","+e+"="+t+" en slot "+r),"function"==typeof execute[e]&&execute[e](n,t,r)}function appendData(n){var e=n.btn;1<=e.indexOf("@")&&(e=e.substring(0,e.indexOf("@"))),doCommand(e,n.cmd,n.data,n.slot)}function responseReact(e){if(e.cmd&&"pong"==e.cmd)return!1;n.log("responseReact",e)}function notification(e){return!!window.location.href.includes(n.settings.server)&&((!e.cmd||"pong"!=e.cmd)&&(e.cmd&&"state"==e.cmd&&e.data&&("DOWN"==e.data||"UP"==e.data)?(n.showedNotification=!1,runBackgroundCommand("clearOldNotifications",null),!1):(e.cmd&&"clidnum"==e.cmd&&e.data&&(n.notification.phoneNumber=Base64.decode(e.data)),e.cmd&&"clidname"==e.cmd&&e.data&&(n.notification.phoneName=Base64.decode(e.data)),void(e.cmd&&"notifyringing"==e.cmd&&e.data&&1==e.data&&!1===n.showedNotification&&(n.log("Show Notification",n.notification),runBackgroundCommand("incomingCall",n.notification),n.showedNotification=!0,n.notification={})))))}function defineWebSocketUrl(){let e="ws";return"true"==n.settings.ssl&&(e="wss"),e+"://"+n.settings.server+":"+n.settings.port}function connectWebsocket(){if(!1!==r)return!1;if("WebSocket"in window){let e=defineWebSocketUrl();n.log("Start WebSocket connection: "+e);try{r=new WebSocket(e)}catch(e){n.log("WebSocket error",e)}r.onopen=function(){connectContext()},r.onmessage=function(n){let e=JSON.parse(n.data);appendData(e),responseReact(e),notification(e)},r.onclose=function(){setTimeout((function(){connectWebsocket()}),5e3),n.log("Unable to connect to server: "+e)},r.onerror=function(n){__debug(n),console.error(n)}}else console.error("Your browser does not support WebSocket connection")}function stripNonNumeric(n){n+="";for(var e=/^\d$/,t="",r=0;r<n.length;r++)e.test(n.charAt(r))&&("."==n.charAt(r)&&-1!=t.indexOf(".")||"-"==n.charAt(r)&&0!=t.length||(t+=n.charAt(r)));return t}function commandCenter(){function n(n,e){if(i==n){var t=localStorage.poplink,r=localStorage.popbody;if(void 0===t&&(t=""),void 0===r&&(r=""),""!=t){var o=/#\{[^\}]*\}/g,c=t.match(o);if(null!==c)for(var a=0;a<c.length;a++){var d=c[a].substr(2,c[a].length-3);o="",o="CLIDNUM"==d||"CLIDNAME"==d?Base64.decode(chanvars[n][d]):chanvars[n][d],t=replace(t,c[a],o)}}if("undefined"!=typeof popup&&1==popup&&(translate("&"+e),void 0!==chanvars[n]))for(d in chanvars[n]){if("CLIDNUM"==d||"CLIDNAME"==d)value=Base64.decode(chanvars[n][d]);else if(/^[0-9]*$/.test(chanvars[n][d]))value=chanvars[n][d];else try{value=windows.atob(chanvars[n][d])}catch(e){value=chanvars[n][d]}value}}}this.zbuttons=function(n,e,t){for(m=[],chanvars=[],__debug(e),29<=subversion?e=Base64.decode(e).split("\n"):(n=new Inflator(new Base64Reader(e)),e=new TextReader(new Utf8Translator(n)).readToEnd().split("\n")),t=0;t<e.length;t++){var r=e[t].split("!"),o=r[0].split("@")[0];for(n=0;n<r.length;n++){var c=r[n].split("=",2);null==m[o]&&(m[o]={}),m[o][c[0]]=c[1],""!==c[0]&&"EXTENSION"==c[0]&&c[1]==a&&(i=o,__debug("My position is "+i))}}},this.voicemail=function(n,e,t){return!1},this.pong=function(n,e,t){setTimeout((function(){sendsPing()}),2e4),h--},this.state=function(n,e,t){if(0<=inArray("RINGING",e=e.split("+"))||0<=inArray("UP",e))e="busy";else if(e="free",i==n&&(u=0,void 0!==chanvars[n]))for(var r in chanvars[n])delete chanvars[n][r]},this.presence=function(n,e,t){},this.key=function(n,e,t){d=e,__debug("lastkey: "+d)},this.setvar=function(n,e,t){i==n&&1<=(e=Base64.decode(e)).indexOf("=")&&(void 0===chanvars[n]&&(chanvars[n]={}),partes=e.split("="),chanvars[n][partes[0]]=partes[1])},this.incorrect=function(n,e,t){__debug("Auth incorrect")},this.version=function(n,e,t){n=hex_md5(c+d),subversion=e.split("!")[0].split(".")[1],subversion=subversion.replace(/\D/g,""),send('<msg data="1|auth|'+a+"|"+n+'" />')},this.qualify=function(n,e,t){return!1},this.clidnum=function(n,e,t){i==n&&(void 0===chanvars[n]&&(chanvars[n]={}),chanvars[n].CLIDNUM=e)},this.clidname=function(n,e,t){i==n&&(void 0===chanvars[n]&&(chanvars[n]={}),chanvars[n].CLIDNAME=e)},this.fromqueue=function(n,e,t){i==n&&(void 0===chanvars[n]&&(chanvars[n]={}),chanvars[n].FROMQUEUE=e)},this.notifyringing=function(e,t,r){n(e,"incoming_call")},this.notifyconnect=function(e,t,r){0==u&&(n(e,"connected_call"),i==e&&(u=1))}}var execute=new commandCenter;function phoneClickEventListener(n){n.preventDefault(),runBackgroundCommand("dialPhone",n.currentTarget.href.replace("callto:","").replace("tel:",""))}function addPhoneLinks(n){n.forEach(n=>{n.removeEventListener("click",phoneClickEventListener),n.addEventListener("click",phoneClickEventListener)})}function runBackgroundCommand(e,t){n.log("runBackgroundCommand start: "+e,t);let r="__rw_chrome_ext_reply_"+(new Date).getTime();chrome.runtime.sendMessage({type:e,data:t},(function(t){chrome.runtime.lastError&&n.log("chrome.runtime.lastError:"+e,t,chrome.runtime.lastError),document.createEvent("Events").initEvent(r,!1,!1),n.log("runBackgroundCommand end: "+e,t)}))}function getSettings(){return new Promise((e,t)=>{chrome.storage.local.get("settings",(function(r){r=r.settings;let o=[];n.requiredSettings.forEach((function(n){void 0===r[n]&&o.push(n)})),0==o.length?e(r):t({type:"error",content:"Settings is undefined",data:o})}))})}function setUpWebSockedSettings(){t=n.settings.ssl,s=n.settings.server,f=n.settings.port,a=n.settings.extension,c=n.settings.password}function ifFop2Page(){return!(!n.settings.server||!window.location.href.includes(n.settings.server))}function proceedPhoneLinks(){let e=!1;ifFop2Page()&&connectWebsocket(),setInterval(()=>{let t=document.querySelectorAll('a.click-to-call[href*="callto"], a.click-to-call[href*="tel"]');t.length>0?(n.phoneLinksInfo&&n.log("Phone links founded: "+t.length),!1!==e||ifFop2Page()||connectWebsocket(),addPhoneLinks(t),e=!0):!1===e&&n.phoneLinksInfo&&n.log("Phone links not found...")},2e3)}async function init(){n.settings=await getSettings(),n.log("CTC.settings",n.settings),setUpWebSockedSettings(),proceedPhoneLinks()}window.addEventListener("load",()=>{init()},!1)}
+/**
+*
+*  Base64 encode / decode
+*  http://www.webtoolkit.info/
+*
+**/
+
+var Base64 = {
+ 
+    // private property
+    _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+ 
+    // public method for encoding
+    encode : function (input) {
+        var output = "";
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        var i = 0;
+ 
+        input = Base64._utf8_encode(input);
+ 
+        while (i < input.length) {
+ 
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+ 
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+ 
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+ 
+            output = output +
+            this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+            this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+ 
+        }
+ 
+        return output;
+    },
+ 
+    // public method for decoding
+    decode : function (input) {
+        var output = "";
+        var chr1, chr2, chr3;
+        var enc1, enc2, enc3, enc4;
+        var i = 0;
+ 
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+ 
+        while (i < input.length) {
+ 
+            enc1 = this._keyStr.indexOf(input.charAt(i++));
+            enc2 = this._keyStr.indexOf(input.charAt(i++));
+            enc3 = this._keyStr.indexOf(input.charAt(i++));
+            enc4 = this._keyStr.indexOf(input.charAt(i++));
+ 
+            chr1 = (enc1 << 2) | (enc2 >> 4);
+            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+            chr3 = ((enc3 & 3) << 6) | enc4;
+ 
+            output = output + String.fromCharCode(chr1);
+ 
+            if (enc3 != 64) {
+                output = output + String.fromCharCode(chr2);
+            }
+            if (enc4 != 64) {
+                output = output + String.fromCharCode(chr3);
+            }
+ 
+        }
+ 
+        output = Base64._utf8_decode(output);
+ 
+        return output;
+ 
+    },
+ 
+    // private method for UTF-8 encoding
+    _utf8_encode : function (string) {
+        string = string.replace(/\r\n/g,"\n");
+        var utftext = "";
+ 
+        for (var n = 0; n < string.length; n++) {
+ 
+            var c = string.charCodeAt(n);
+ 
+            if (c < 128) {
+                utftext += String.fromCharCode(c);
+            }
+            else if((c > 127) && (c < 2048)) {
+                utftext += String.fromCharCode((c >> 6) | 192);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+            else {
+                utftext += String.fromCharCode((c >> 12) | 224);
+                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+ 
+        }
+ 
+        return utftext;
+    },
+ 
+    // private method for UTF-8 decoding
+    _utf8_decode : function (utftext) {
+        var string = "";
+        var i = 0;
+        var c = c1 = c2 = 0;
+ 
+        while ( i < utftext.length ) {
+ 
+            c = utftext.charCodeAt(i);
+ 
+            if (c < 128) {
+                string += String.fromCharCode(c);
+                i++;
+            }
+            else if((c > 191) && (c < 224)) {
+                c2 = utftext.charCodeAt(i+1);
+                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                i += 2;
+            }
+            else {
+                c2 = utftext.charCodeAt(i+1);
+                c3 = utftext.charCodeAt(i+2);
+                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                i += 3;
+            }
+ 
+        }
+ 
+        return string;
+    }
+ 
+}
+
+/*
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.1 Copyright (C) Paul Johnston 1999 - 2002.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
+
+/*
+ * Configurable variables. You may need to tweak these to be compatible with
+ * the server-side, but the defaults work in most cases.
+ */
+var hexcase = 0;  /* hex output format. 0 - lowercase; 1 - uppercase        */
+var b64pad  = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
+
+/*
+ * These are the functions you'll usually want to call
+ * They take string arguments and return either hex or base-64 encoded strings
+ */
+function hex_md5(s){ return binl2hex(core_md5(str2binl(s), s.length * chrsz));}
+function b64_md5(s){ return binl2b64(core_md5(str2binl(s), s.length * chrsz));}
+function str_md5(s){ return binl2str(core_md5(str2binl(s), s.length * chrsz));}
+function hex_hmac_md5(key, data) { return binl2hex(core_hmac_md5(key, data)); }
+function b64_hmac_md5(key, data) { return binl2b64(core_hmac_md5(key, data)); }
+function str_hmac_md5(key, data) { return binl2str(core_hmac_md5(key, data)); }
+
+/*
+ * Perform a simple self-test to see if the VM is working
+ */
+function md5_vm_test()
+{
+  return hex_md5("abc") == "900150983cd24fb0d6963f7d28e17f72";
+}
+
+/*
+ * Calculate the MD5 of an array of little-endian words, and a bit length
+ */
+function core_md5(x, len)
+{
+  /* append padding */
+  x[len >> 5] |= 0x80 << ((len) % 32);
+  x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+  var a =  1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d =  271733878;
+
+  for(var i = 0; i < x.length; i += 16)
+  {
+    var olda = a;
+    var oldb = b;
+    var oldc = c;
+    var oldd = d;
+
+    a = md5_ff(a, b, c, d, x[i+ 0], 7 , -680876936);
+    d = md5_ff(d, a, b, c, x[i+ 1], 12, -389564586);
+    c = md5_ff(c, d, a, b, x[i+ 2], 17,  606105819);
+    b = md5_ff(b, c, d, a, x[i+ 3], 22, -1044525330);
+    a = md5_ff(a, b, c, d, x[i+ 4], 7 , -176418897);
+    d = md5_ff(d, a, b, c, x[i+ 5], 12,  1200080426);
+    c = md5_ff(c, d, a, b, x[i+ 6], 17, -1473231341);
+    b = md5_ff(b, c, d, a, x[i+ 7], 22, -45705983);
+    a = md5_ff(a, b, c, d, x[i+ 8], 7 ,  1770035416);
+    d = md5_ff(d, a, b, c, x[i+ 9], 12, -1958414417);
+    c = md5_ff(c, d, a, b, x[i+10], 17, -42063);
+    b = md5_ff(b, c, d, a, x[i+11], 22, -1990404162);
+    a = md5_ff(a, b, c, d, x[i+12], 7 ,  1804603682);
+    d = md5_ff(d, a, b, c, x[i+13], 12, -40341101);
+    c = md5_ff(c, d, a, b, x[i+14], 17, -1502002290);
+    b = md5_ff(b, c, d, a, x[i+15], 22,  1236535329);
+
+    a = md5_gg(a, b, c, d, x[i+ 1], 5 , -165796510);
+    d = md5_gg(d, a, b, c, x[i+ 6], 9 , -1069501632);
+    c = md5_gg(c, d, a, b, x[i+11], 14,  643717713);
+    b = md5_gg(b, c, d, a, x[i+ 0], 20, -373897302);
+    a = md5_gg(a, b, c, d, x[i+ 5], 5 , -701558691);
+    d = md5_gg(d, a, b, c, x[i+10], 9 ,  38016083);
+    c = md5_gg(c, d, a, b, x[i+15], 14, -660478335);
+    b = md5_gg(b, c, d, a, x[i+ 4], 20, -405537848);
+    a = md5_gg(a, b, c, d, x[i+ 9], 5 ,  568446438);
+    d = md5_gg(d, a, b, c, x[i+14], 9 , -1019803690);
+    c = md5_gg(c, d, a, b, x[i+ 3], 14, -187363961);
+    b = md5_gg(b, c, d, a, x[i+ 8], 20,  1163531501);
+    a = md5_gg(a, b, c, d, x[i+13], 5 , -1444681467);
+    d = md5_gg(d, a, b, c, x[i+ 2], 9 , -51403784);
+    c = md5_gg(c, d, a, b, x[i+ 7], 14,  1735328473);
+    b = md5_gg(b, c, d, a, x[i+12], 20, -1926607734);
+
+    a = md5_hh(a, b, c, d, x[i+ 5], 4 , -378558);
+    d = md5_hh(d, a, b, c, x[i+ 8], 11, -2022574463);
+    c = md5_hh(c, d, a, b, x[i+11], 16,  1839030562);
+    b = md5_hh(b, c, d, a, x[i+14], 23, -35309556);
+    a = md5_hh(a, b, c, d, x[i+ 1], 4 , -1530992060);
+    d = md5_hh(d, a, b, c, x[i+ 4], 11,  1272893353);
+    c = md5_hh(c, d, a, b, x[i+ 7], 16, -155497632);
+    b = md5_hh(b, c, d, a, x[i+10], 23, -1094730640);
+    a = md5_hh(a, b, c, d, x[i+13], 4 ,  681279174);
+    d = md5_hh(d, a, b, c, x[i+ 0], 11, -358537222);
+    c = md5_hh(c, d, a, b, x[i+ 3], 16, -722521979);
+    b = md5_hh(b, c, d, a, x[i+ 6], 23,  76029189);
+    a = md5_hh(a, b, c, d, x[i+ 9], 4 , -640364487);
+    d = md5_hh(d, a, b, c, x[i+12], 11, -421815835);
+    c = md5_hh(c, d, a, b, x[i+15], 16,  530742520);
+    b = md5_hh(b, c, d, a, x[i+ 2], 23, -995338651);
+
+    a = md5_ii(a, b, c, d, x[i+ 0], 6 , -198630844);
+    d = md5_ii(d, a, b, c, x[i+ 7], 10,  1126891415);
+    c = md5_ii(c, d, a, b, x[i+14], 15, -1416354905);
+    b = md5_ii(b, c, d, a, x[i+ 5], 21, -57434055);
+    a = md5_ii(a, b, c, d, x[i+12], 6 ,  1700485571);
+    d = md5_ii(d, a, b, c, x[i+ 3], 10, -1894986606);
+    c = md5_ii(c, d, a, b, x[i+10], 15, -1051523);
+    b = md5_ii(b, c, d, a, x[i+ 1], 21, -2054922799);
+    a = md5_ii(a, b, c, d, x[i+ 8], 6 ,  1873313359);
+    d = md5_ii(d, a, b, c, x[i+15], 10, -30611744);
+    c = md5_ii(c, d, a, b, x[i+ 6], 15, -1560198380);
+    b = md5_ii(b, c, d, a, x[i+13], 21,  1309151649);
+    a = md5_ii(a, b, c, d, x[i+ 4], 6 , -145523070);
+    d = md5_ii(d, a, b, c, x[i+11], 10, -1120210379);
+    c = md5_ii(c, d, a, b, x[i+ 2], 15,  718787259);
+    b = md5_ii(b, c, d, a, x[i+ 9], 21, -343485551);
+
+    a = safe_add(a, olda);
+    b = safe_add(b, oldb);
+    c = safe_add(c, oldc);
+    d = safe_add(d, oldd);
+  }
+  return Array(a, b, c, d);
+
+}
+
+/*
+ * These functions implement the four basic operations the algorithm uses.
+ */
+function md5_cmn(q, a, b, x, s, t)
+{
+  return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
+}
+function md5_ff(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+}
+function md5_gg(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+}
+function md5_hh(a, b, c, d, x, s, t)
+{
+  return md5_cmn(b ^ c ^ d, a, b, x, s, t);
+}
+function md5_ii(a, b, c, d, x, s, t)
+{
+  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+}
+
+/*
+ * Calculate the HMAC-MD5, of a key and some data
+ */
+function core_hmac_md5(key, data)
+{
+  var bkey = str2binl(key);
+  if(bkey.length > 16) bkey = core_md5(bkey, key.length * chrsz);
+
+  var ipad = Array(16), opad = Array(16);
+  for(var i = 0; i < 16; i++)
+  {
+    ipad[i] = bkey[i] ^ 0x36363636;
+    opad[i] = bkey[i] ^ 0x5C5C5C5C;
+  }
+
+  var hash = core_md5(ipad.concat(str2binl(data)), 512 + data.length * chrsz);
+  return core_md5(opad.concat(hash), 512 + 128);
+}
+
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+function safe_add(x, y)
+{
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+}
+
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+function bit_rol(num, cnt)
+{
+  return (num << cnt) | (num >>> (32 - cnt));
+}
+
+/*
+ * Convert a string to an array of little-endian words
+ * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
+ */
+function str2binl(str)
+{
+  var bin = Array();
+  var mask = (1 << chrsz) - 1;
+  for(var i = 0; i < str.length * chrsz; i += chrsz)
+    bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (i%32);
+  return bin;
+}
+
+/*
+ * Convert an array of little-endian words to a string
+ */
+function binl2str(bin)
+{
+  var str = "";
+  var mask = (1 << chrsz) - 1;
+  for(var i = 0; i < bin.length * 32; i += chrsz)
+    str += String.fromCharCode((bin[i>>5] >>> (i % 32)) & mask);
+  return str;
+}
+
+/*
+ * Convert an array of little-endian words to a hex string.
+ */
+function binl2hex(binarray)
+{
+  var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+  var str = "";
+  for(var i = 0; i < binarray.length * 4; i++)
+  {
+    str += hex_tab.charAt((binarray[i>>2] >> ((i%4)*8+4)) & 0xF) +
+           hex_tab.charAt((binarray[i>>2] >> ((i%4)*8  )) & 0xF);
+  }
+  return str;
+}
+
+/*
+ * Convert an array of little-endian words to a base-64 string
+ */
+function binl2b64(binarray)
+{
+  var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  var str = "";
+  for(var i = 0; i < binarray.length * 4; i += 3)
+  {
+    var triplet = (((binarray[i   >> 2] >> 8 * ( i   %4)) & 0xFF) << 16)
+                | (((binarray[i+1 >> 2] >> 8 * ((i+1)%4)) & 0xFF) << 8 )
+                |  ((binarray[i+2 >> 2] >> 8 * ((i+2)%4)) & 0xFF);
+    for(var j = 0; j < 4; j++)
+    {
+      if(i * 8 + j * 6 > binarray.length * 32) str += b64pad;
+      else str += tab.charAt((triplet >> 6*(3-j)) & 0x3F);
+    }
+  }
+  return str;
+}
+
+
+
+
+
+function inIframe() {
+	try {
+		return window.self !== window.top;
+	} catch (e) {
+		return true;
+	}
+}
+
+// do not ru extension inside iframe
+if (inIframe()) {
+
+	console.log('Extension loaded inside iframe. Abort.');
+
+} else {
+
+
+
+
+	let CTC = {
+
+		dev: true,
+		phoneLinksInfo: false,
+
+		showedNotification: false,
+		notification: {},
+
+		requiredSettings: [
+			'ssl',
+			'server',
+			'port',
+			'extension',
+			'password'
+		],
+
+		settings: {},
+
+		log: function (...arguments) {
+
+			if (CTC.dev == false) {
+				return false;
+			}
+
+			if (arguments.length > 0) {
+				arguments.forEach((arg) => {
+					console.log(arg);
+				});
+			}
+		}
+	};
+
+	let _debug = true,
+		ssl = true,
+		ws = false,
+		context = "",
+		myposition = 1,
+		secret = null,
+		exten = null,
+		lastkey = "",
+		wshost = null,
+		wsport = null,
+		pingcount = 0,
+		alreadynotified = 0,
+		prefix = "",
+		botonitos = [],
+		activeCalls = [];
+
+
+	function inArray(n, e) {
+		return -1 !== e.indexOf(n)
+	}
+
+
+	function __debug(...arguments) {
+		if (_debug == false) {
+			return false;
+		}
+
+		if (arguments.length > 0) {
+			arguments.forEach((arg) => {
+				if (typeof arg == 'string' && !arg.includes('style=') && !arg.includes('ping=') && !arg.includes('pong=') && !arg.includes('plugin=')) {
+
+
+					void 0 !== window.console && console.log(arg)
+				}
+			})
+		}
+	}
+
+
+
+	function send(n) {
+
+		if (typeof ws == 'undefined' || ws == false) {
+			__debug('Error. WebSocked is undefined.', ws);
+			return false;
+		}
+		if (!n.includes('|ping|')) {
+			__debug("sending command " + n);
+		}
+		ws.send(n);
+	}
+
+
+	function sendsPing() {
+		__debug("ping " + pingcount), 5 < pingcount && __debug("Connection problem with websocket server!"), send('<msg data="1|ping||" />'), pingcount++
+	}
+
+	function connectContext() {
+		"" !== context ? send('<msg data="' + context.toUpperCase() + '|contexto|1|" />') : send('<msg data="GENERAL|contexto|1|" />');
+		setTimeout((function () {
+			sendsPing()
+		}), 1e4)
+	}
+
+	function doCommand(btn, cmd, data, slot) {
+
+		"status" == cmd && (cmd = "xstatus"),
+			"zbuttons" != cmd && __debug(btn + "," + cmd + "=" + data + " en slot " + slot),
+			"function" == typeof execute[cmd] && execute[cmd](btn, data, slot);
+
+	}
+
+	function appendData(response) {
+		var btn = response.btn;
+
+		1 <= btn.indexOf("@") && (btn = btn.substring(0, btn.indexOf("@"))),
+
+			doCommand(btn, response.cmd, response.data, response.slot);
+	}
+
+
+	function responseReact(response) {
+		if (response.cmd && response.cmd == 'pong') {
+			return false;
+		}
+		CTC.log('responseReact', response);
+	}
+
+
+
+
+
+
+
+	function notification(response) {
+
+		// run oly if FOP2 page
+		if (!window.location.href.includes(CTC.settings.server)) {
+			return false;
+		}
+
+		// ignore ping-pong
+		if (response.cmd && response.cmd == 'pong') {
+			return false;
+		}
+
+
+
+		if (response.cmd && response.cmd == 'state' && response.data && (response.data == 'DOWN' || response.data == 'UP')) {
+
+			CTC.showedNotification = false;
+
+			runBackgroundCommand('clearOldNotifications', null);
+
+			return false;
+		}
+
+
+		if (response.cmd && response.cmd == 'clidnum' && response.data) {
+
+			// if (CTC.notification.phoneNumber == CTC.settings.extension) {
+			// 	return false;
+			// }
+
+			CTC.notification.phoneNumber = Base64.decode(response.data);
+		}
+
+
+		if (response.cmd && response.cmd == 'clidname' && response.data) {
+			CTC.notification.phoneName = Base64.decode(response.data);
+		}
+
+
+		if (response.cmd && response.cmd == 'notifyringing' && response.data && response.data == 1 && CTC.showedNotification === false) {
+
+			CTC.log('Show Notification', CTC.notification);
+
+			runBackgroundCommand('incomingCall', CTC.notification);
+
+			CTC.showedNotification = true;
+
+			CTC.notification = {};
+
+		}
+
+
+	}
+
+
+
+
+
+	function defineWebSocketUrl() {
+
+		let protocol = 'ws';
+
+		if (CTC.settings.ssl == 'true') {
+
+			protocol = 'wss'
+		}
+
+		return protocol + '://' + CTC.settings.server + ':' + CTC.settings.port;
+	}
+
+
+	function connectWebsocket() {
+
+		if (ws !== false) {
+			return false;
+		}
+
+		if ('WebSocket' in window) {
+
+			let url = defineWebSocketUrl();
+
+			CTC.log('Start WebSocket connection: ' + url);
+
+			try {
+				ws = new WebSocket(url)
+			} catch (Error) {
+				CTC.log('WebSocket error', Error);
+			}
+
+			ws.onopen = function () {
+				connectContext();
+			}
+
+			ws.onmessage = function (event) {
+
+				let response = JSON.parse(event.data);
+
+				appendData(response);
+
+				responseReact(response);
+
+				notification(response);
+			}
+
+			ws.onclose = function () {
+
+				setTimeout((function () {
+
+					connectWebsocket();
+
+				}), 5000);
+
+				CTC.log('Unable to connect to server: ' + url);
+			}
+
+			ws.onerror = function (Error) {
+				__debug(Error)
+				console.error(Error);
+			}
+
+		} else {
+			console.error('Your browser does not support WebSocket connection');
+		}
+	}
+
+	function stripNonNumeric(n) {
+		n += "";
+		for (var e = /^\d$/, t = "", r = 0; r < n.length; r++) e.test(n.charAt(r)) && ("." == n.charAt(r) && -1 != t.indexOf(".") || "-" == n.charAt(r) && 0 != t.length || (t += n.charAt(r)));
+		return t
+	}
+
+
+	function commandCenter() {
+		function n(n, e) {
+			if (myposition == n) {
+				var t = localStorage.poplink,
+					r = localStorage.popbody;
+				if (void 0 === t && (t = ""), void 0 === r && (r = ""), "" != t) {
+					var o = /#\{[^\}]*\}/g,
+						i = t.match(o);
+					if (null !== i)
+						for (var a = 0; a < i.length; a++) {
+							var c = i[a].substr(2, i[a].length - 3);
+							o = "", o = "CLIDNUM" == c || "CLIDNAME" == c ? Base64.decode(chanvars[n][c]) : chanvars[n][c], t = replace(t, i[a], o)
+						}
+				}
+				if (typeof popup !== 'undefined' && 1 == popup) {
+					translate("&" + e);
+					if (void 0 !== chanvars[n])
+						for (c in chanvars[n]) {
+							if ("CLIDNUM" == c || "CLIDNAME" == c) value = Base64.decode(chanvars[n][c]);
+							else if (/^[0-9]*$/.test(chanvars[n][c])) value = chanvars[n][c];
+							else try {
+								value = windows.atob(chanvars[n][c])
+							} catch (e) {
+								value = chanvars[n][c]
+							}
+							value + "\n"
+						}
+				}
+			}
+		}
+		this.zbuttons = function (n, e, t) {
+			for (botonitos = [], chanvars = [], __debug(e), 29 <= subversion ? e = Base64.decode(e).split("\n") : (n = new Inflator(new Base64Reader(e)), e = new TextReader(new Utf8Translator(n)).readToEnd().split("\n")), t = 0; t < e.length; t++) {
+				var r = e[t].split("!"),
+					o = r[0].split("@")[0];
+				for (n = 0; n < r.length; n++) {
+					var i = r[n].split("=", 2);
+					null == botonitos[o] && (botonitos[o] = {}), botonitos[o][i[0]] = i[1], "" !== i[0] && "EXTENSION" == i[0] && i[1] == exten && (myposition = o, __debug("My position is " + myposition))
+				}
+			}
+		}, this.voicemail = function (n, e, t) {
+			return !1
+		}, this.pong = function (n, e, t) {
+			setTimeout((function () {
+				sendsPing()
+			}), 2e4), pingcount--
+		}, this.state = function (n, e, t) {
+			if (0 <= inArray("RINGING", e = e.split("+")) || 0 <= inArray("UP", e)) "free", e = "busy";
+			else if ("busy", e = "free", myposition == n && (alreadynotified = 0, void 0 !== chanvars[n]))
+				for (var r in chanvars[n]) delete chanvars[n][r]
+		}, this.presence = function (n, e, t) { }, this.key = function (n, e, t) {
+			lastkey = e, __debug("lastkey: " + lastkey)
+		}, this.setvar = function (n, e, t) {
+			myposition == n && (1 <= (e = Base64.decode(e)).indexOf("=") && (void 0 === chanvars[n] && (chanvars[n] = {}),
+				partes = e.split("="), chanvars[n][partes[0]] = partes[1]))
+		}, this.incorrect = function (n, e, t) {
+			__debug("Auth incorrect")
+		}, this.version = function (n, e, t) {
+			n = hex_md5(secret + lastkey), subversion = e.split("!")[0].split(".")[1],
+				subversion = subversion.replace(/\D/g, ""),
+				send('<msg data="1|auth|' + exten + "|" + n + '" />')
+		}, this.qualify = function (n, e, t) {
+			return !1
+		}, this.clidnum = function (n, e, t) {
+			myposition == n && (void 0 === chanvars[n] && (chanvars[n] = {}), chanvars[n].CLIDNUM = e)
+		}, this.clidname = function (n, e, t) {
+			myposition == n && (void 0 === chanvars[n] && (chanvars[n] = {}), chanvars[n].CLIDNAME = e)
+		}, this.fromqueue = function (n, e, t) {
+			myposition == n && (void 0 === chanvars[n] && (chanvars[n] = {}), chanvars[n].FROMQUEUE = e)
+		}, this.notifyringing = function (e, t, r) {
+			n(e, "incoming_call")
+		}, this.notifyconnect = function (e, t, r) {
+			0 == alreadynotified && (n(e, "connected_call"), myposition == e && (alreadynotified = 1))
+		}
+	}
+	var execute = new commandCenter;
+
+
+
+
+	function phoneClickEventListener(e) {
+
+		e.preventDefault();
+
+		let phone = e.currentTarget.href.replace("callto:", "").replace("tel:", "");
+
+		runBackgroundCommand('dialPhone', phone);
+	}
+
+
+	function addPhoneLinks(phoneLinks) {
+		phoneLinks.forEach(phoneLink => {
+			phoneLink.removeEventListener('click', phoneClickEventListener);
+			phoneLink.addEventListener('click', phoneClickEventListener);
+		});
+	}
+
+
+
+	function runBackgroundCommand(Command, Data) {
+
+
+		CTC.log('runBackgroundCommand start: ' + Command, Data);
+
+		let EVENT_REPLY = '__rw_chrome_ext_reply_' + new Date().getTime();
+
+		chrome.runtime.sendMessage({
+			type: Command,
+			data: Data
+		}, function (data) {
+
+			if (chrome.runtime.lastError.message) {
+
+				CTC.log('chrome.runtime.lastError.message for: ' + Command, data, chrome.runtime.lastError.message);
+
+			}
+
+			var event = document.createEvent('Events');
+
+			event.initEvent(EVENT_REPLY, false, false);
+
+			CTC.log('runBackgroundCommand end: ' + Command, data);
+
+
+
+		});
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+	function getSettings() {
+		return new Promise((resolve, reject) => {
+
+			chrome.storage.local.get('settings', function (settings) {
+
+				settings = settings.settings;
+
+				let undefinedSettings = [];
+
+				CTC.requiredSettings.forEach(function (field) {
+
+					if (typeof settings[field] == 'undefined') {
+
+						undefinedSettings.push(field);
+					}
+				});
+
+				if (undefinedSettings.length == 0) {
+
+					resolve(settings);
+
+				} else {
+
+					reject({
+						type: 'error',
+						content: 'Settings is undefined',
+						data: undefinedSettings
+					});
+
+				}
+
+			});
+		});
+	}
+
+
+	function setUpWebSockedSettings() {
+		ssl = CTC.settings.ssl;
+		wshost = CTC.settings.server;
+		wsport = CTC.settings.port;
+		exten = CTC.settings.extension;
+		secret = CTC.settings.password;
+	}
+
+
+	function ifFop2Page() {
+		if (CTC.settings.server && window.location.href.includes(CTC.settings.server)) {
+			return true;
+		}
+		return false;
+	}
+
+	function proceedPhoneLinks() {
+
+		let phoneLinksFound = false;
+
+		// if the page is FOP2 - start WebSocket anyway
+		if (ifFop2Page()) {
+			connectWebsocket();
+		}
+
+		setInterval(() => {
+
+			let phoneLinks = document.querySelectorAll('a.click-to-call[href*="callto"], a.click-to-call[href*="tel"]');
+
+			if (phoneLinks.length > 0) {
+
+				if (CTC.phoneLinksInfo) {
+					CTC.log('Phone links founded: ' + phoneLinks.length);
+				}
+
+				if (phoneLinksFound === false && !ifFop2Page()) {
+
+					connectWebsocket();
+				}
+
+				addPhoneLinks(phoneLinks);
+
+				phoneLinksFound = true;
+
+			} else {
+				if (phoneLinksFound === false) {
+
+					if (CTC.phoneLinksInfo) {
+						CTC.log('Phone links not found...');
+					}
+				}
+			}
+
+		}, 2000);
+	}
+
+
+	async function init() {
+
+		CTC.settings = await getSettings();
+
+		CTC.log('CTC.settings', CTC.settings);
+
+		setUpWebSockedSettings();
+
+		proceedPhoneLinks();
+
+	}
+
+
+	window.addEventListener('load', () => {
+
+		init();
+
+	}, false);
+
+
+}

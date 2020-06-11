@@ -24,9 +24,10 @@
       "*://*/*",
       "notifications",
       "tabs",
-      "storage"
+      "storage",
+      "contextMenus"
    ],
-   "version": "1.0.7",
+   "version": "1.0.8",
    "web_accessible_resources": [
       "assets/img/tel-128.png",
       "assets/img/tel-128-red.png",

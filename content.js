@@ -788,9 +788,13 @@ if (inIframe()) {
 			data: Data
 		}, function (data) {
 
-			if (chrome.runtime.lastError.message) {
+			if (typeof chrome.runtime.lastError !== 'undefined') {
 
-				CTC.log('chrome.runtime.lastError.message for: ' + Command, data, chrome.runtime.lastError.message);
+				if (typeof chrome.runtime.lastError.message !== 'undefined') {
+					CTC.log('chrome.runtime.lastError.message for: ' + Command, data, chrome.runtime.lastError.message);
+				} else {
+					CTC.log('chrome.runtime.lastError.message for: ' + Command, data, chrome.runtime.lastError);
+				}
 
 			}
 

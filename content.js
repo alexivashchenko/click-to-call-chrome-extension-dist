@@ -426,7 +426,11 @@ if (inIframe()) {
 		phoneLinksInfo: false,
 
 		showedNotification: false,
+		startNotification: false,
+		notificationOperator: false,
+
 		notification: {},
+		startCollectNotificationData: false,
 
 		requiredSettings: [
 			'ssl',
@@ -452,7 +456,7 @@ if (inIframe()) {
 		}
 	};
 
-	let _debug = true,
+	let _debug = false,
 		ssl = true,
 		ws = false,
 		context = "",
@@ -506,7 +510,8 @@ if (inIframe()) {
 
 
 	function sendsPing() {
-		__debug("ping " + pingcount), 5 < pingcount && __debug("Connection problem with websocket server!"), send('<msg data="1|ping||" />'), pingcount++
+		return true;
+		// __debug("ping " + pingcount), 5 < pingcount && __debug("Connection problem with websocket server!"), send('<msg data="1|ping||" />'), pingcount++
 	}
 
 	function connectContext() {
@@ -534,66 +539,113 @@ if (inIframe()) {
 
 
 	function responseReact(response) {
-		if (response.cmd && response.cmd == 'pong') {
+
+		let _response = response;
+
+		if (_response.cmd && (_response.cmd == 'pong' || _response.cmd == 'idletimer' || _response.cmd == 'setidle')) {
 			return false;
 		}
-		CTC.log('responseReact', response);
+
+		if (_response.cmd && (_response.cmd == 'queuemember' || _response.cmd == 'stats') && _response.data) {
+			_response.data = JSON.parse(Base64.decode(_response.data));
+		}
+		if (_response.cmd && (
+			_response.cmd == 'clidname'
+			|| _response.cmd == 'clidnum'
+			|| _response.cmd == 'plugin'
+			|| _response.cmd == 'style'
+			|| _response.cmd == 'restrictq'
+			|| _response.cmd == 'permitbtn'
+			|| _response.cmd == 'preferences'
+			|| _response.cmd == 'defaultpreferences'
+			|| _response.cmd == 'vmailpath'
+			|| _response.cmd == 'zbuttons'
+			|| _response.cmd == 'permit'
+		) && _response.data) {
+			_response.data = Base64.decode(_response.data);
+		}
+
+		CTC.log(_response);
 	}
 
 
 
 
+	function getOperatorId(data) {
+		if (typeof data == 'string') {
+			data = JSON.parse(Base64.decode(data));
+		}
+		let loc = data[0].loc;
+		loc = loc.replace('Local/', '');
+		loc = loc.replace('@from-queue/n', '');
+		loc = parseInt(loc);
+		// console.log('getOperatorId: ' + loc, data);
+		return loc;
+	}
+	function getOperatorState(data) {
+		if (typeof data == 'string') {
+			data = JSON.parse(Base64.decode(data));
+		}
+		return data[0].state;
+	}
 
 
 
-	function notification(response) {
+
+	function _notification(response) {
 
 		// run oly if FOP2 page
 		if (!window.location.href.includes(CTC.settings.server)) {
 			return false;
 		}
 
-		// ignore ping-pong
-		if (response.cmd && response.cmd == 'pong') {
-			return false;
+		if (CTC.startCollectNotificationData === true) {
+
+			// get incoming phone number
+			if (response.cmd && response.cmd == 'clidnum' && response.data) {
+					CTC.notification.phoneNumber = response.data;
+			}
+
+			// get incoming phone name
+			if (response.cmd && response.cmd == 'clidname' && response.data) {
+				CTC.notification.phoneName = response.data;
+			}
+
+			if (response.cmd && response.cmd == 'notifyringing' && response.data && response.data == 1) {
+
+				// stop collect data for notification
+				CTC.startCollectNotificationData = false;
+
+				// send notification
+				runBackgroundCommand('incomingCall', CTC.notification);
+
+			}
+
 		}
 
 
 
-		if (response.cmd && response.cmd == 'state' && response.data && (response.data == 'DOWN' || response.data == 'UP')) {
 
-			CTC.showedNotification = false;
+		if (response.cmd && response.cmd == 'queuemember' && response.data) {
 
-			runBackgroundCommand('clearOldNotifications', null);
+			CTC.notificationOperator = getOperatorId(response.data);
 
-			return false;
-		}
+			// if current operator
+			if (CTC.notificationOperator == CTC.settings.extension) {
 
+				if (getOperatorState(response.data) == 'ringing') {
 
-		if (response.cmd && response.cmd == 'clidnum' && response.data) {
+					// start collect data for notification
+					CTC.startCollectNotificationData = true;
 
-			// if (CTC.notification.phoneNumber == CTC.settings.extension) {
-			// 	return false;
-			// }
+				} else {
 
-			CTC.notification.phoneNumber = Base64.decode(response.data);
-		}
+					CTC.notification = {};
 
+					runBackgroundCommand('clearOldNotifications', null);
+				}
 
-		if (response.cmd && response.cmd == 'clidname' && response.data) {
-			CTC.notification.phoneName = Base64.decode(response.data);
-		}
-
-
-		if (response.cmd && response.cmd == 'notifyringing' && response.data && response.data == 1 && CTC.showedNotification === false) {
-
-			CTC.log('Show Notification', CTC.notification);
-
-			runBackgroundCommand('incomingCall', CTC.notification);
-
-			CTC.showedNotification = true;
-
-			CTC.notification = {};
+			}
 
 		}
 
@@ -647,7 +699,7 @@ if (inIframe()) {
 
 				responseReact(response);
 
-				notification(response);
+				_notification(response);
 			}
 
 			ws.onclose = function () {
@@ -659,6 +711,7 @@ if (inIframe()) {
 				}), 5000);
 
 				CTC.log('Unable to connect to server: ' + url);
+				ws = false;
 			}
 
 			ws.onerror = function (Error) {

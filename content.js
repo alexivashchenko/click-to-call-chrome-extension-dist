@@ -510,8 +510,8 @@ if (inIframe()) {
 
 
 	function sendsPing() {
-		return true;
-		// __debug("ping " + pingcount), 5 < pingcount && __debug("Connection problem with websocket server!"), send('<msg data="1|ping||" />'), pingcount++
+		// return true;
+		__debug("ping " + pingcount), 5 < pingcount && __debug("Connection problem with websocket server!"), send('<msg data="1|ping||" />'), pingcount++
 	}
 
 	function connectContext() {

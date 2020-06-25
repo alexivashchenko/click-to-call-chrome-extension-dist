@@ -27,10 +27,13 @@
       "storage",
       "contextMenus"
    ],
-   "version": "1.0.11",
+   "version": "1.0.12",
    "web_accessible_resources": [
       "assets/img/tel-128.png",
       "assets/img/tel-128-red.png",
-      "assets/img/tel-128-green.png"
+      "assets/img/tel-128-green.png",
+      "assets/img/tel-19.png",
+      "assets/img/tel-19-red.png",
+      "assets/img/tel-19-green.png"
    ]
 }
